@@ -36,7 +36,8 @@ tickers += ['AMZN', 'GOOG', 'TSLA', 'JPM', 'META']
 # Additional diversification
 # tickers += ['GLD', 'TLT', 'XLE', 'XLV', 'VNQ', 'EEM', 'EWJ']
 
-START = '2021-04-13'
+# START = '2021-04-13'
+START = '2016-04-13'
 END   = '2026-04-14' 
 
 RETURNS_CSV = os.path.join(os.path.dirname(__file__), '..', 'data', 'returns.csv')

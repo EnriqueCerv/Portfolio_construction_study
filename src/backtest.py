@@ -247,6 +247,7 @@ if __name__ == '__main__':
     RESULTS_DIR = os.path.join(os.path.dirname(__file__), '..', 'results')
     os.makedirs(RESULTS_DIR, exist_ok=True)
     plt.savefig(os.path.join(RESULTS_DIR, 'oos_backtest_comparison.png'))
+    plt.show()
 
 
 
@@ -286,3 +287,4 @@ if __name__ == '__main__':
     RESULTS_DIR = os.path.join(os.path.dirname(__file__), '..', 'results')
     os.makedirs(RESULTS_DIR, exist_ok=True)
     plt.savefig(os.path.join(RESULTS_DIR, 'bootstrap_sharpe_comparison.png'))
+    plt.show()
