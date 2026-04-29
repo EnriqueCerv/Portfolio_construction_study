@@ -28,14 +28,15 @@ def load_stock(ticker: str, start: str, end: str, plot: bool = False) -> pd.Data
     return df
 
 # Personal
-tickers = ['VOO', 'AAPL', 'SMH', 'TSM', 'NVDA', 'MSFT', 'AMD', 'BOTZ', 'NLR']
+tickers = ['VOO', 'AAPL', 'SMH', 'TSM', 'MSFT', 'AMD', 'BOTZ', 'NLR']
 # Defense
 tickers += ['LMT', 'RTX', 'GD', 'NOC']
 # Other big tech
-tickers += ['AMZN', 'GOOG', 'TSLA', 'JPM', 'META']
+tickers += ['AMZN', 'GOOG', 'TSLA', 'JPM', 'META', 'ASML', 'V', 'NVDA']
 # # Additional diversification
 # # Commodities:
-# tickers += ['GLD', 'SLV', 'PDBC', 'XLE']
+tickers += ['GLD', 'SLV']
+# 'PDBC', 'XLE']
 # # International equity:
 # tickers += ['EWJ', 'EWZ', 'INDA']
 
