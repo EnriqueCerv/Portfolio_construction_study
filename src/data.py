@@ -41,8 +41,8 @@ tickers += ['GLD', 'SLV']
 # tickers += ['EWJ', 'EWZ', 'INDA']
 
 # START = '2021-04-13'
-START = '2016-04-13'
-END   = '2026-04-14' 
+START = '2016-04-29'
+END   = '2026-04-29' 
 
 RETURNS_CSV = os.path.join(os.path.dirname(__file__), '..', 'data', 'returns.csv')
 os.makedirs(os.path.join(os.path.dirname(__file__), '..', 'data'), exist_ok=True)

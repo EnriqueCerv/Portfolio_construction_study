@@ -1,13 +1,13 @@
 # Portfolio Construction Study
 
-Seven portfolio construction methods were compared on a 17-asset universe over the last 10 years, with transaction costs and turnover penalties. 
+Seven portfolio construction methods were compared on a 22-asset universe ---including equities, commodities (GLD, SLVR) and etfs--- over the last 10 years, with transaction costs and turnover penalties. 
 We compared HRP, Risk Parity, Mean-Variance, Min-Variance, and Inverse-Variance against the benchmarks of an Equal Weight portfolio and the full S&P 500 (VOO).
 
 ---
 
 ## Out-of-Sample Backtest
 
-Across six allocation methods on a 17-asset US equity universe (2015–2026, 10bps transaction costs), risk-parity-style methods (Risk Parity, HRP, Equal Weight) achieved the highest Sharpe ratios (1.12–1.16), while mean-variance optimization performed worst (Sharpe 0.81) due to high turnover consuming returns.
+Across six allocation methods on a 22-asset US equity universe (2015–2026, 10bps transaction costs), risk-parity-style methods (Risk Parity, HRP, Equal Weight) achieved the highest Sharpe ratios (1.1–1.3), while mean-variance optimization performed worst (Sharpe 0.7) due to high turnover consuming returns.
 
 ![Out-of-sample cumulative returns](results/oos_backtest_comparison.png)
 
@@ -34,6 +34,9 @@ After multiple-testing correction (Deflated Sharpe Ratio), Risk Parity (DSR 0.97
 ## Key Finding
 
 HRP did not outperform plain Risk Parity or Equal Weight on this small, highly-correlated universe, contrary to López de Prado (2016). We hypothesize that HRP's clustering advantages require larger and more diverse universes to manifest.
+
+For personal equity portfolio, HRP attains returns (0.25) between those of equal weight (0.27) and risk parity (0.23) methods, with risk parity having much lower volatility (0.17) than hrp (0.22) and equal weight (0.21). 
+Indicating that risk-parity is advantageous for risk averse personal investors.
 
 ---
 
