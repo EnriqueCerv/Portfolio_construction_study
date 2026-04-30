@@ -32,14 +32,15 @@ tickers = ['VOO', 'AAPL', 'SMH', 'TSM', 'MSFT', 'AMD', 'BOTZ', 'NLR']
 # Defense
 tickers += ['LMT', 'RTX', 'GD', 'NOC']
 # Other big tech
-tickers += ['AMZN', 'GOOG', 'TSLA', 'JPM', 'META', 'ASML', 'V', 'NVDA']
+tickers += ['AMZN', 'GOOG', 'TSLA', 'JPM', 'META', 'ASML', 'V']
+# # Results look very different without adding 'NVDA'
+# tickers += ['NVDA']
 # # Additional diversification
 # # Commodities:
-tickers += ['GLD', 'SLV']
-# 'PDBC', 'XLE']
+tickers += ['GLD', 'SLV', 'XLE']
+# 'PDBC']
 # # International equity:
 # tickers += ['EWJ', 'EWZ', 'INDA']
-
 # START = '2021-04-13'
 START = '2016-04-29'
 END   = '2026-04-29' 

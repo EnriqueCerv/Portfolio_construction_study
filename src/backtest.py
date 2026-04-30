@@ -226,7 +226,16 @@ if __name__ == '__main__':
 
     # Get stats:
     stats_table, bootstrap_sharpes = summary_table(returns_dict=returns_dict, turnovers_dict=turnovers_dict)
-    print(stats_table.T)
+    # print(stats_table.T)
+
+    display_cols = [
+    'Annual Return', 'Annual Vol', 'Sharpe', 'Sharpe CI lower', 'Sharpe CI upper',
+    'Max Drawdown', 'Calmar', 'Avg Turnover', 'DSR'
+    ]
+    print(stats_table[display_cols].round(3))
+
+    diff_cols = ['Mean Sharpe diff', 'Sharpe diff CI lower', 'Sharpe diff CI upper', 'Pct wins vs Benchmark']
+    print(stats_table[diff_cols].round(3))
 
     # # # # # # # # # # # #
     # Plot and save comparisons
