@@ -16,9 +16,9 @@ def mean_variance_portfolio(
         plot: bool = False
     ) -> pd.Series:
     '''
-    Input: DataFrame of correlations, returns for stocks (option for ledoit-wolf and mean return shrinkage)
+    Input: DataFrame of returns for stocks (option for ledoit-wolf and mean return shrinkage), risk tradeoff lambda
     Output: Weights obtained via markowitz mean-variance optimization as per
-    max_w   < w, mu > - lambda < w, Corr w > / 2
+    max_w   < w, mu > - lambda < w, Cov w > / 2
     '''
     
     # Get correlation and expected returns

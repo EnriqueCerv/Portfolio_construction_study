@@ -13,7 +13,7 @@ import sklearn as sk
 # # # # # # # # # # # # #
 def load_stock(ticker: str, start: str, end: str, plot: bool = False) -> pd.DataFrame:
     """
-    Returns data frame of given ticker, also a plot of its close and returns if plot == True
+    Returns data frame of returns of given ticker, also a plot of its close and returns if plot == True
     """
     df = yf.Ticker(ticker)
     df = df.history(start=start, end=end)
@@ -26,6 +26,7 @@ def load_stock(ticker: str, start: str, end: str, plot: bool = False) -> pd.Data
         ax.right_ax.set_ylabel('Return')
     
     return df
+
 
 # Personal
 tickers = ['VOO', 'AAPL', 'SMH', 'TSM', 'MSFT', 'AMD', 'BOTZ', 'NLR']
@@ -45,7 +46,10 @@ tickers += ['GLD', 'SLV', 'XLE']
 START = '2016-04-29'
 END   = '2026-04-29' 
 
+
+# Load Returns
 RETURNS_CSV = os.path.join(os.path.dirname(__file__), '..', 'data', 'returns.csv')
+CLOSES_CSV = os.path.join(os.path.dirname(__file__), '..', 'data', 'closes.csv')
 os.makedirs(os.path.join(os.path.dirname(__file__), '..', 'data'), exist_ok=True)
 
 
@@ -58,6 +62,11 @@ else:
     returns.index = returns.index.tz_localize(None)
     returns.to_csv(RETURNS_CSV)
     print(f"Saved {len(returns)} rows to {RETURNS_CSV}, ending {returns.index[-1].date()}")
+
+    closes = pd.DataFrame({ticker: data[ticker]['Close'] for ticker in tickers}).dropna(how='any')
+    closes.index = closes.index.tz_localize(None)
+    closes.to_csv(CLOSES_CSV)
+    print(f"Saved {len(closes)} rows to {CLOSES_CSV}, ending {closes.index[-1].date()}")
 
 # %%
 if __name__ == '__main__':
