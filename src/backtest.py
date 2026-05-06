@@ -10,6 +10,7 @@ from allocators.mean_variance import mean_variance_portfolio
 from allocators.min_variance import min_variance_portfolio
 from allocators.inverse_variance import inverse_variance_portfolio
 from allocators.risk_parity import risk_parity_portfolio
+from allocators.black_litterman import black_litterman_portfolio
 from stats import summary_table
 # %%
 
@@ -19,7 +20,8 @@ portfolio_dict = {
     'risk_parity': risk_parity_portfolio,
     'mean_variance': mean_variance_portfolio,
     'min_variance': min_variance_portfolio,
-    'inverse_variance': inverse_variance_portfolio
+    'inverse_variance': inverse_variance_portfolio,
+    'black_litterman': black_litterman_portfolio
 }
 
 
@@ -186,6 +188,22 @@ if __name__ == '__main__':
         plot = False
     )
 
+    # Black litterman
+    black_litterman_returns, black_litterman_avg_turnover, black_litterman_cum_returns = backtest_returns(
+        returns, 
+        lookback=126, 
+        rebalance_freq=21, 
+        cost_bps = cost_bps,
+        portfolio='black_litterman',
+        lambda_risk = 1,
+        tau = 1/120, # Depends on confidence, tau\in (1/view_lookback,1). High tau = high confidence in views, small tau = closer to prio
+        view_lookback = 120,
+        K = 6,
+        diagonal_Omega = True,
+        easy_Omega = True,
+        plot = False
+    )
+
     # Trim benchmarks to backtest start date
     backtest_start = hrp_cum_returns.index[0]
     backtest_end = hrp_cum_returns.index[-1]
@@ -209,6 +227,7 @@ if __name__ == '__main__':
         'Mean-Variance': mean_variance_returns,
         'Min-Variance': min_variance_returns,
         'Inverse-Variance': inverse_variance_returns,
+        'Black-Litterman': black_litterman_returns,
         'Equal Weight': equal_portfolio_returns,
         'VOO': voo_returns,
     }
@@ -220,6 +239,7 @@ if __name__ == '__main__':
         'Mean-Variance': mean_variance_avg_turnover,
         'Min-Variance': min_variance_avg_turnover,
         'Inverse-Variance': inverse_variance_avg_turnover,
+        'Black-Litterman': black_litterman_avg_turnover,
         'Equal Weight': 0,
         'VOO': 0,
     }
@@ -246,6 +266,7 @@ if __name__ == '__main__':
     mean_variance_cum_returns.plot(label='Mean-variance')
     min_variance_cum_returns.plot(label='Min-variance')
     inverse_variance_cum_returns.plot(label='Inverse-variance')
+    black_litterman_cum_returns.plot(label='Black-Litterman')
     equal_portfolio_cum_returns.plot(label='Equal weight')
     voo_cum_returns.plot(label='VOO')
     plt.legend()
@@ -255,7 +276,7 @@ if __name__ == '__main__':
     plt.tight_layout()
     RESULTS_DIR = os.path.join(os.path.dirname(__file__), '..', 'results')
     os.makedirs(RESULTS_DIR, exist_ok=True)
-    plt.savefig(os.path.join(RESULTS_DIR, 'oos_backtest_comparison.png'))
+    # plt.savefig(os.path.join(RESULTS_DIR, 'oos_backtest_comparison.png'))
     plt.show()
 
 
@@ -295,5 +316,6 @@ if __name__ == '__main__':
     plt.tight_layout()
     RESULTS_DIR = os.path.join(os.path.dirname(__file__), '..', 'results')
     os.makedirs(RESULTS_DIR, exist_ok=True)
-    plt.savefig(os.path.join(RESULTS_DIR, 'bootstrap_sharpe_comparison.png'))
+    # plt.savefig(os.path.join(RESULTS_DIR, 'bootstrap_sharpe_comparison.png'))
     plt.show()
+# %%

@@ -7,14 +7,14 @@ import seaborn as sns
 import cvxpy as cp
 
 from covariance import returns_corr_cov
-from mean_variance import mean_variance
+from allocators.mean_variance import mean_variance
 # %%
 def black_litterman_portfolio(
-        returns: pd.DataFrame, 
+        returns: pd.DataFrame,
         lambda_risk: float,
         tau: float,
-        Q_view_vector: np.ndarray,
-        P_view_matrix: np.ndarray,
+        view_lookback: int,
+        K: int,
         diagonal_Omega: bool = False,
         easy_Omega: bool = True,
         plot: bool = False
@@ -27,7 +27,7 @@ def black_litterman_portfolio(
     '''
     
     # Get correlation and expected returns
-    cov_matrix, _ = returns_corr_cov(returns, lw=False, plot=plot)
+    cov_matrix, _ = returns_corr_cov(returns, lw=True, plot=plot)
     tickers = list(cov_matrix.columns)
 
     # The prior should be the the normalised market cap per day, two issues with that:
@@ -37,6 +37,10 @@ def black_litterman_portfolio(
     # Since this is just a prior, we can have the prior be the equal weight portfolio --> Important thing is the views
     market_weights = pd.Series(np.ones(len(tickers)) / len(tickers), index=cov_matrix.columns)
     market_returns = get_equilibrium_returns(cov_matrix=cov_matrix, market_weights=market_weights, lambda_risk=lambda_risk)
+
+    # Get views
+    closes = (1 + returns).cumprod()
+    Q_view_vector, P_view_matrix = get_views(closes=closes, view_lookback=view_lookback, K=K)
 
     # Get posteriors
     cov_BL, exp_returns_BL = BL_posterior(
@@ -108,7 +112,7 @@ def BL_posterior(
     # Get posterior returns
     exp_returns_BL = cov_BL @ (np.linalg.inv(tau * cov_matrix) @ market_returns + P_view_matrix.T @ Omega_inv @ Q_view_vector)
 
-    return cov_BL, exp_returns_BL
+    return cov_BL + cov_matrix.values, exp_returns_BL
 
 
 def views_variance_easy(
@@ -127,3 +131,54 @@ def views_variance_easy(
     if easy_Omega:
         Omega = tau * P_view_matrix @ cov_matrix @ P_view_matrix.T
         return Omega if not diagonal_Omega else np.diag(np.diag(Omega))
+    else:
+        raise NotImplementedError("Only easy Omega currently supported")
+
+# %%
+
+# # # # # # # # 
+# Get views
+# # # # # # # #
+
+def get_views(closes: pd.DataFrame, view_lookback: int, K: int) -> tuple:
+    trailing_ret = closes.pct_change(view_lookback).iloc[-1]
+    trailing_vol = closes.pct_change().rolling(view_lookback).std().iloc[-1]
+    momentum_score = trailing_ret / trailing_vol
+    
+    ranked = momentum_score.rank()
+    n = len(closes.columns)
+    
+    # Get top K and bottom K assets
+    top_K = ranked.nlargest(K).index
+    bot_K = ranked.nsmallest(K).index
+    
+    # K views: each top asset outperforms its paired bottom asset
+    P_view_matrix = np.zeros((K, n))
+    Q_view_vector = np.zeros(K)
+    
+    for i, (top, bot) in enumerate(zip(top_K, bot_K)):
+        P_view_matrix[i, closes.columns.get_loc(top)] = 1
+        P_view_matrix[i, closes.columns.get_loc(bot)] = -1
+        Q_view_vector[i] = (trailing_ret[top] - trailing_ret[bot]) / view_lookback
+    
+    return Q_view_vector, P_view_matrix
+
+# %%
+if __name__ == '__main__':
+    from src.data import returns
+
+    # Optimize portfolio
+    lambda_risk = 1
+    K = 6
+    view_lookback = 126
+    # tau = 0.025
+    tau = 1/view_lookback
+    optimized_weights = black_litterman_portfolio(
+        returns=returns,
+        lambda_risk=lambda_risk,
+        tau=tau,
+        view_lookback=view_lookback,
+        K=K
+        )    
+    optimized_weights.sort_values().plot(kind='barh', title=f'Black-Litterman Portfolio Weights, lambda = {lambda_risk}', figsize=(8,5))
+    print(optimized_weights)

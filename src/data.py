@@ -49,13 +49,11 @@ END   = '2026-04-29'
 
 # Load Returns
 RETURNS_CSV = os.path.join(os.path.dirname(__file__), '..', 'data', 'returns.csv')
-CLOSES_CSV = os.path.join(os.path.dirname(__file__), '..', 'data', 'closes.csv')
 os.makedirs(os.path.join(os.path.dirname(__file__), '..', 'data'), exist_ok=True)
 
 
 if os.path.exists(RETURNS_CSV):
     returns = pd.read_csv(RETURNS_CSV, index_col=0, parse_dates=True)
-
 else:
     data = {ticker: load_stock(ticker, start=START, end=END, plot=False) for ticker in tickers}
     returns = pd.DataFrame({ticker: data[ticker]['Return'] for ticker in tickers}).dropna(how='any')
@@ -63,10 +61,6 @@ else:
     returns.to_csv(RETURNS_CSV)
     print(f"Saved {len(returns)} rows to {RETURNS_CSV}, ending {returns.index[-1].date()}")
 
-    closes = pd.DataFrame({ticker: data[ticker]['Close'] for ticker in tickers}).dropna(how='any')
-    closes.index = closes.index.tz_localize(None)
-    closes.to_csv(CLOSES_CSV)
-    print(f"Saved {len(closes)} rows to {CLOSES_CSV}, ending {closes.index[-1].date()}")
 
 # %%
 if __name__ == '__main__':

@@ -52,7 +52,11 @@ def mean_variance(cov_matrix: pd.DataFrame, exp_returns: pd.DataFrame, lambda_ri
 
     # Optimize
     problem = cp.Problem(objective=objective, constraints=constraints)
-    problem.solve()
+    # problem.solve()
+    try:
+        problem.solve()
+    except cp.SolverError:
+        problem.solve(solver='SCS')
     optimized_weights = pd.Series(w.value, index=cov_matrix.columns)
     optimized_weights[optimized_weights.abs() < 1e-6] = 0
 
