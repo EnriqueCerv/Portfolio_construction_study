@@ -42,10 +42,9 @@ tickers += ['GLD', 'SLV', 'XLE']
 # 'PDBC']
 # # International equity:
 # tickers += ['EWJ', 'EWZ', 'INDA']
-# START = '2021-04-13'
-START = '2016-04-29'
-END   = '2026-04-29' 
 
+START = '2016-05-09'
+END   = '2026-05-09' 
 
 # Load Returns
 RETURNS_CSV = os.path.join(os.path.dirname(__file__), '..', 'data', 'returns.csv')

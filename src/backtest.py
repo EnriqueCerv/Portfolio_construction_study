@@ -129,8 +129,9 @@ if __name__ == '__main__':
     # Get returns and turnover
     # # # # # # # # # # # #
 
-    cost_bps = 10
+    cost_bps = 20
     
+    print('Running HRP...')
     # HRP
     hrp_returns, hrp_avg_turnover, hrp_cum_returns = backtest_returns(
         returns,
@@ -142,6 +143,7 @@ if __name__ == '__main__':
         plot = False
         )
     
+    print('Running RP...')
     # Equal risk parity
     risk_parity_returns, risk_parity_avg_turnover, risk_parity_cum_returns = backtest_returns(
         returns, 
@@ -153,6 +155,7 @@ if __name__ == '__main__':
         plot = False
     )
 
+    print('Running MeanVar...')
     # Mean-variance
     mean_variance_returns, mean_variance_avg_turnover, mean_variance_cum_returns = backtest_returns(
         returns, 
@@ -166,6 +169,7 @@ if __name__ == '__main__':
         plot = False
         )
     
+    print('Running MinVar...')
     # Min-variance
     min_variance_returns, min_variance_avg_turnover, min_variance_cum_returns = backtest_returns(
         returns, 
@@ -177,6 +181,7 @@ if __name__ == '__main__':
         plot = False
     )
     
+    print('Running InvVar...')
     # Inverse variance
     inverse_variance_returns, inverse_variance_avg_turnover, inverse_variance_cum_returns = backtest_returns(
         returns, 
@@ -188,6 +193,7 @@ if __name__ == '__main__':
         plot = False
     )
 
+    print('Running BL...')
     # Black litterman
     black_litterman_returns, black_litterman_avg_turnover, black_litterman_cum_returns = backtest_returns(
         returns, 
@@ -252,10 +258,12 @@ if __name__ == '__main__':
     'Annual Return', 'Annual Vol', 'Sharpe', 'Sharpe CI lower', 'Sharpe CI upper',
     'Max Drawdown', 'Calmar', 'Avg Turnover', 'DSR'
     ]
-    print(stats_table[display_cols].round(3))
+    table1 = stats_table[display_cols].round(3)
+    print(table1)
 
     diff_cols = ['Mean Sharpe diff', 'Sharpe diff CI lower', 'Sharpe diff CI upper', 'Pct wins vs Benchmark']
-    print(stats_table[diff_cols].round(3))
+    table2 = stats_table[diff_cols].round(3)
+    print(table2)
 
     # # # # # # # # # # # #
     # Plot and save comparisons
@@ -318,4 +326,3 @@ if __name__ == '__main__':
     os.makedirs(RESULTS_DIR, exist_ok=True)
     # plt.savefig(os.path.join(RESULTS_DIR, 'bootstrap_sharpe_comparison.png'))
     plt.show()
-# %%
