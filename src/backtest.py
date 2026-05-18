@@ -124,6 +124,7 @@ def backtest_portfolio(
 # %%
 if __name__ == '__main__':
     from data import returns
+    print(returns.columns)
 
     # # # # # # # # # # # #
     # Get returns and turnover
@@ -134,7 +135,7 @@ if __name__ == '__main__':
     print('Running HRP...')
     # HRP
     hrp_returns, hrp_avg_turnover, hrp_cum_returns = backtest_returns(
-        returns,
+        returns.drop(columns=['VOO']),
         lookback=126, 
         rebalance_freq=21, 
         cost_bps = cost_bps,
@@ -146,7 +147,7 @@ if __name__ == '__main__':
     print('Running RP...')
     # Equal risk parity
     risk_parity_returns, risk_parity_avg_turnover, risk_parity_cum_returns = backtest_returns(
-        returns, 
+        returns.drop(columns=['VOO']), 
         lookback=126, 
         rebalance_freq=21, 
         cost_bps = cost_bps,
@@ -172,7 +173,7 @@ if __name__ == '__main__':
     print('Running MinVar...')
     # Min-variance
     min_variance_returns, min_variance_avg_turnover, min_variance_cum_returns = backtest_returns(
-        returns, 
+        returns.drop(columns=['VOO']), 
         lookback=126, 
         rebalance_freq=21, 
         cost_bps = cost_bps,
@@ -184,7 +185,7 @@ if __name__ == '__main__':
     print('Running InvVar...')
     # Inverse variance
     inverse_variance_returns, inverse_variance_avg_turnover, inverse_variance_cum_returns = backtest_returns(
-        returns, 
+        returns.drop(columns=['VOO']), 
         lookback=126, 
         rebalance_freq=21, 
         cost_bps = cost_bps,
@@ -214,8 +215,8 @@ if __name__ == '__main__':
     backtest_start = hrp_cum_returns.index[0]
     backtest_end = hrp_cum_returns.index[-1]
 
-    equal_weights = np.ones(len(returns.columns)) / len(returns.columns)
-    equal_portfolio_returns = (returns @ equal_weights)[backtest_start:backtest_end]
+    equal_weights = np.ones(len(returns.columns) - 1) / (len(returns.columns) - 1)
+    equal_portfolio_returns = (returns.drop(columns=['VOO']) @ equal_weights)[backtest_start:backtest_end]
     equal_portfolio_cum_returns = (1 + equal_portfolio_returns).cumprod()
 
     voo_returns = returns['VOO'][backtest_start:backtest_end]
@@ -259,11 +260,11 @@ if __name__ == '__main__':
     'Max Drawdown', 'Calmar', 'Avg Turnover', 'DSR'
     ]
     table1 = stats_table[display_cols].round(3)
-    print(table1)
+    # print(table1)
 
     diff_cols = ['Mean Sharpe diff', 'Sharpe diff CI lower', 'Sharpe diff CI upper', 'Pct wins vs Benchmark']
     table2 = stats_table[diff_cols].round(3)
-    print(table2)
+    # print(table2)
 
     # # # # # # # # # # # #
     # Plot and save comparisons

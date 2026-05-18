@@ -29,7 +29,7 @@ def load_stock(ticker: str, start: str, end: str, plot: bool = False) -> pd.Data
 
 
 # Personal
-tickers = ['VOO', 'AAPL', 'SMH', 'TSM', 'MSFT', 'AMD', 'BOTZ', 'NLR']
+tickers = ['VOO', 'AAPL', 'SMH', 'TSM', 'AMD', 'BOTZ', 'NLR', 'MSFT']
 # Defense
 tickers += ['LMT', 'RTX', 'GD', 'NOC']
 # Other big tech
@@ -39,9 +39,13 @@ tickers += ['AMZN', 'GOOG', 'TSLA', 'JPM', 'META', 'ASML', 'V']
 # # Additional diversification
 # # Commodities:
 tickers += ['GLD', 'SLV', 'XLE']
-# 'PDBC']
 # # International equity:
-# tickers += ['EWJ', 'EWZ', 'INDA']
+tickers += ['EWS', 'EWP'] # singapore, spain
+# tickers += ['EWJ', 'EWU', 'EWQ', 'EWG', 'EDEN', 'VPL'] # japan, uk, france, germany, denmark,  pacific
+# # Others:
+tickers += ['VXUS', 'NEE', 'JNJ', 'UNH', 'PG', 'COST', 'WELL', 'SCCO', 'RIO']
+# tickers += ['VTI'] # Basically same as voo
+# tickers += ['AVUS'] # since 2020
 
 START = '2016-05-09'
 END   = '2026-05-09' 
